@@ -192,7 +192,7 @@ const EventWritePage = () => {
 
     return (
         <div className="form-container">
-            <h2>Create a New Blog</h2>
+            <h2>Create a New Event</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="heading">Heading:</label>
