@@ -47,9 +47,9 @@ const SignUpPage = () => {
             return;
         }
 
-        console.log("Hi");
+        // console.log("Hi");
         if (!isRegistered) {
-            console.log("Hello");
+            // console.log("Hello");
             await doCreateUserWithEmailAndPassword(email, password).then(
                 () => {
                     setIsRegistered(true);
@@ -69,7 +69,7 @@ const SignUpPage = () => {
             {isRegistered && (<Navigate to={'/login'} replace={true} />)}
             <form className="signup-form" onSubmit={handleSubmit}>
                 <h2>Sign Up</h2>
-                
+
                 <div className="form-group">
                     <label htmlFor="email">Email:</label>
                     <input

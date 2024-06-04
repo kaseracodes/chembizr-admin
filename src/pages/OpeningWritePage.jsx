@@ -12,7 +12,8 @@ const OpeningWritePage = () => {
         responsibilities: '',
         requiredQualifications: '',
         additionalQualifications: '',
-        gform: ''
+        gform: '',
+        date: ''
     });
 
     const [isformsubmitted, SetIsFormSubmitted] = useState(false);
@@ -38,7 +39,7 @@ const OpeningWritePage = () => {
                 requiredQualifications: formData.requiredQualifications,
                 additionalQualifications: formData.additionalQualifications,
                 gform: formData.gform,
-                date: new Date(),
+                date: formData.date,
             });
             // Reset form data
             setFormData({
@@ -47,7 +48,8 @@ const OpeningWritePage = () => {
                 responsibilities: '',
                 requiredQualifications: '',
                 additionalQualifications: '',
-                gform: ''
+                gform: '',
+                date: ''
             });
             SetIsFormSubmitted(true);
 
@@ -68,6 +70,17 @@ const OpeningWritePage = () => {
                         id="name"
                         name="name"
                         value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="date">Date:</label>
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        value={formData.date}
                         onChange={handleInputChange}
                         required
                     />

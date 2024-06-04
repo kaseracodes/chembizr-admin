@@ -13,6 +13,7 @@ const EventWritePage = () => {
         heading: '',
         description: '',
         category: '',
+        date: ''
     });
 
     const [imageFile, setImageFile] = useState(null);
@@ -98,7 +99,7 @@ const EventWritePage = () => {
 
         // If image is selected, proceed with image upload
         try {
-            
+
             const filePath = `assets/${imageFile.name}`;
             const folderRef = ref_storage(storage, filePath);
             const uploadedFile = uploadBytesResumable(folderRef, imageFile);
@@ -128,7 +129,7 @@ const EventWritePage = () => {
         } catch (error) {
             console.error("Error uploading image:", error);
         }
-        
+
     }
 
     // Function to handle form submission
@@ -157,7 +158,7 @@ const EventWritePage = () => {
                             heading: formData.heading,
                             description: content,
                             category: formData.category,
-                            date: new Date(),
+                            date: formData.date,
                             logoPath: downloadUrl,
                             timestamp: serverTimestamp()
                         });
@@ -166,7 +167,8 @@ const EventWritePage = () => {
                             heading: '',
                             author: '',
                             description: '',
-                            category: ''
+                            category: '',
+                            date: ''
                         });
                         // Reset imageFile and imgError states
                         setImageFile(null);
@@ -206,6 +208,17 @@ const EventWritePage = () => {
                     />
                 </div>
                 <div className="form-group">
+                    <label htmlFor="date">Date:</label>
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        value={formData.date}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
                     <label htmlFor="description">Description:</label>
                     <JoditEditor
                         id="description"
@@ -221,14 +234,28 @@ const EventWritePage = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="category">Category:</label>
-                    <input
-                        type="text"
+                    <select
                         id="category"
                         name="category"
                         value={formData.category}
                         onChange={handleInputChange}
                         required
-                    />
+                    >
+                        <option value="">Select Category</option>
+                        <option value="Adhesives and Sealants">Adhesives and Sealants</option>
+                        <option value="Animal Feed and Nutrition">Animal Feed and Nutrition</option>
+                        <option value="Composites">Composites</option>
+                        <option value="Construction">Construction</option>
+                        <option value="Energy And Resources">Energy And Resources</option>
+                        <option value="Food and Nutrition">Food and Nutrition</option>
+                        <option value="Microbials">Microbials</option>
+                        <option value="Oil and Gas">Oil and Gas</option>
+                        <option value="Paints & Coating">Paints & Coating</option>
+                        <option value="Personal Care">Personal Care</option>
+                        <option value="Petrochemicals & Downstream">Petrochemicals & Downstream</option>
+                        <option value="Polymers">Polymers</option>
+                        <option value="Surfactants">Surfactants</option>
+                    </select>
                 </div>
                 <div className="form-group">
                     <label htmlFor="imageFile">Upload Image from device to generate URL:</label>
@@ -248,10 +275,10 @@ const EventWritePage = () => {
                         </div>
                     )}
                     {isimguploading && (
-                            <div>
-                                <p style={{ color: 'red', fontSize: '18px' }}>Image is being uploaded...</p>
-                            </div>
-                        )
+                        <div>
+                            <p style={{ color: 'red', fontSize: '18px' }}>Image is being uploaded...</p>
+                        </div>
+                    )
                     }
 
                     <h6 className="imgError"> {imgError && "Sorry, only jpg/jpeg/png/jfif images are allowed"} </h6>
@@ -270,19 +297,19 @@ const EventWritePage = () => {
                         required
                     />
                     {isbgimguploading && (
-                            <div>
-                                <p style={{ color: 'red', fontSize: '18px' }}>Image is being uploaded...</p>
-                            </div>
-                        )
+                        <div>
+                            <p style={{ color: 'red', fontSize: '18px' }}>Image is being uploaded...</p>
+                        </div>
+                    )
                     }
-                     <h6 className="imgError"> {logoImgError && "Sorry, only jpg/jpeg/png/jfif images are allowed"} </h6>
+                    <h6 className="imgError"> {logoImgError && "Sorry, only jpg/jpeg/png/jfif images are allowed"} </h6>
                 </div>
                 <button type="submit">Submit</button>
                 {isformsubmitted && (
-                        <div>
-                            <p style={{ color: 'green', fontSize: '18px' }}>The Event is uploaded !!</p>
-                        </div>
-                    )
+                    <div>
+                        <p style={{ color: 'green', fontSize: '18px' }}>The Event is uploaded !!</p>
+                    </div>
+                )
                 }
             </form>
         </div>

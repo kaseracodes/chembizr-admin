@@ -13,7 +13,8 @@ const EventWritePage = () => {
         heading: '',
         subheading: '',
         category: '',
-        pdf: ''
+        pdf: '',
+        date: ''
     });
 
     const [imageFile, setImageFile] = useState(null);
@@ -100,7 +101,7 @@ const EventWritePage = () => {
 
         // If image is selected, proceed with image upload
         try {
-            
+
             const filePath = `assets/${imageFile.name}`;
             const folderRef = ref_storage(storage, filePath);
             const uploadedFile = uploadBytesResumable(folderRef, imageFile);
@@ -130,7 +131,7 @@ const EventWritePage = () => {
         } catch (error) {
             console.error("Error uploading image:", error);
         }
-        
+
     }
 
     // Function to handle form submission
@@ -157,9 +158,11 @@ const EventWritePage = () => {
                         await addDoc(collection(firestore, "compendiums"), {
                             id: uniqid(),
                             heading: formData.heading,
+                            subheading: formData.subheading,
                             description: content,
                             category: formData.category,
-                            date: new Date(),
+                            pdf: formData.pdf,
+                            date: formData.date,
                             logoPath: downloadUrl,
                             timestamp: serverTimestamp()
                         });
@@ -167,7 +170,8 @@ const EventWritePage = () => {
                         setFormData({
                             heading: '',
                             description: '',
-                            category: ''
+                            category: '',
+                            date: ''
                         });
                         // Reset imageFile and imgError states
                         setImageFile(null);
@@ -218,6 +222,17 @@ const EventWritePage = () => {
                     />
                 </div>
                 <div className="form-group">
+                    <label htmlFor="date">Date:</label>
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        value={formData.date}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
                     <label htmlFor="description">Description:</label>
                     <JoditEditor
                         id="description"
@@ -233,15 +248,23 @@ const EventWritePage = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="category">Category:</label>
-                    <input
-                        type="text"
+                    <select
                         id="category"
                         name="category"
                         value={formData.category}
                         onChange={handleInputChange}
                         required
-                    />
+                    >
+                        <option value="">Select Category</option>
+                        <option value="Food, Nutrition & Beverages">Food, Nutrition & Beverages</option>
+                        <option value="Speciality Chemicals and Polymers">Speciality Chemicals and Polymers</option>
+                        <option value="Petrochemicals & Downstream">Petrochemicals & Downstream</option>
+                        <option value="Clean Energy & Storage">Clean Energy & Storage</option>
+                        <option value="Mobility">Mobility</option>
+                        <option value="Personal Care & Cosmetics">Personal Care & Cosmetics</option>
+                    </select>
                 </div>
+
                 <div className="form-group">
                     <label htmlFor="pdf">Enter Pdf Link:</label>
                     <input
@@ -271,10 +294,10 @@ const EventWritePage = () => {
                         </div>
                     )}
                     {isimguploading && (
-                            <div>
-                                <p style={{ color: 'red', fontSize: '18px' }}>Image is being uploaded...</p>
-                            </div>
-                        )
+                        <div>
+                            <p style={{ color: 'red', fontSize: '18px' }}>Image is being uploaded...</p>
+                        </div>
+                    )
                     }
 
                     <h6 className="imgError"> {imgError && "Sorry, only jpg/jpeg/png/jfif images are allowed"} </h6>
@@ -293,19 +316,19 @@ const EventWritePage = () => {
                         required
                     />
                     {isbgimguploading && (
-                            <div>
-                                <p style={{ color: 'red', fontSize: '18px' }}>Image is being uploaded...</p>
-                            </div>
-                        )
+                        <div>
+                            <p style={{ color: 'red', fontSize: '18px' }}>Image is being uploaded...</p>
+                        </div>
+                    )
                     }
-                     <h6 className="imgError"> {logoImgError && "Sorry, only jpg/jpeg/png/jfif images are allowed"} </h6>
+                    <h6 className="imgError"> {logoImgError && "Sorry, only jpg/jpeg/png/jfif images are allowed"} </h6>
                 </div>
                 <button type="submit">Submit</button>
                 {isformsubmitted && (
-                        <div>
-                            <p style={{ color: 'green', fontSize: '18px' }}>The Compendium is uploaded !!</p>
-                        </div>
-                    )
+                    <div>
+                        <p style={{ color: 'green', fontSize: '18px' }}>The Compendium is uploaded !!</p>
+                    </div>
+                )
                 }
             </form>
         </div>

@@ -13,7 +13,12 @@ const BlogWritePage = () => {
         heading: '',
         author: '',
         description: '',
+        short: '',
         category: '',
+        pagetype: '',
+        insighttype: '',
+        isspotlight: '',
+        date: ''
     });
 
     const [imageFile, setImageFile] = useState(null);
@@ -99,7 +104,7 @@ const BlogWritePage = () => {
 
         // If image is selected, proceed with image upload
         try {
-            
+
             const filePath = `assets/${imageFile.name}`;
             const folderRef = ref_storage(storage, filePath);
             const uploadedFile = uploadBytesResumable(folderRef, imageFile);
@@ -129,7 +134,7 @@ const BlogWritePage = () => {
         } catch (error) {
             console.error("Error uploading image:", error);
         }
-        
+
     }
 
     // Function to handle form submission
@@ -158,8 +163,12 @@ const BlogWritePage = () => {
                             heading: formData.heading,
                             author: formData.author,
                             description: content,
+                            short: formData.short,
                             category: formData.category,
-                            date: new Date(),
+                            pagetype: formData.pagetype,
+                            insighttype: formData.insighttype,
+                            isspotlight: formData.isspotlight,
+                            date: formData.date,
                             image: downloadUrl,
                             timestamp: serverTimestamp(),
                             comments: []
@@ -169,7 +178,12 @@ const BlogWritePage = () => {
                             heading: '',
                             author: '',
                             description: '',
-                            category: ''
+                            short: '',
+                            category: '',
+                            pagetype: '',
+                            insighttype: '',
+                            isspotlight: '',
+                            date: ''
                         });
                         // Reset imageFile and imgError states
                         setImageFile(null);
@@ -220,6 +234,17 @@ const BlogWritePage = () => {
                     />
                 </div>
                 <div className="form-group">
+                    <label htmlFor="date">Date:</label>
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        value={formData.date}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
                     <label htmlFor="description">Description:</label>
                     <JoditEditor
                         id="description"
@@ -229,17 +254,6 @@ const BlogWritePage = () => {
                         onChange={newContent => {
                             SetContent(newContent)
                         }}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="category">Category:</label>
-                    <input
-                        type="text"
-                        id="category"
-                        name="category"
-                        value={formData.category}
-                        onChange={handleInputChange}
                         required
                     />
                 </div>
@@ -261,15 +275,94 @@ const BlogWritePage = () => {
                         </div>
                     )}
                     {isimguploading && (
-                            <div>
-                                <p style={{ color: 'red', fontSize: '18px' }}>Image is being uploaded...</p>
-                            </div>
-                        )
+                        <div>
+                            <p style={{ color: 'red', fontSize: '18px' }}>Image is being uploaded...</p>
+                        </div>
+                    )
                     }
 
                     <h6 className="imgError"> {imgError && "Sorry, only jpg/jpeg/png/jfif images are allowed"} </h6>
-
                 </div>
+                <div className="form-group">
+                    <label htmlFor="short">Short Description:</label>
+                    <textarea
+                        type="text"
+                        id="short"
+                        name="short"
+                        value={formData.short}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="category">Category:</label>
+                    <select
+                        id="category"
+                        name="category"
+                        value={formData.category}
+                        onChange={handleInputChange}
+                        required
+                    >
+                        <option value="">Select a category</option>
+                        <option value="Programming">Programming</option>
+                        <option value="Data Science">Data Science</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Self Improvement">Self Improvement</option>
+                        <option value="Writing">Writing</option>
+                        <option value="Relationships">Relationships</option>
+                        <option value="Machine Learning">Machine Learning</option>
+                        <option value="Productivity">Productivity</option>
+                        <option value="Politics">Politics</option>
+                    </select>
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="pagetype">Page Type:</label>
+                    <select
+                        id="pagetype"
+                        name="pagetype"
+                        value={formData.pagetype}
+                        onChange={handleInputChange}
+                        required
+                    >
+                        <option value="">Select Page Type</option>
+                        <option value="Food, Nutrition & Beverages">Food, Nutrition & Beverages</option>
+                        <option value="Speciality Chemicals and Polymers">Speciality Chemicals and Polymers</option>
+                        <option value="Petrochemicals & Downstream">Petrochemicals & Downstream</option>
+                        <option value="Clean Energy & Storage">Clean Energy & Storage</option>
+                        <option value="Mobility">Mobility</option>
+                        <option value="Personal Care & Cosmetics">Personal Care & Cosmetics</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="insighttype">Insight Type:</label>
+                    <select
+                        id="insighttype"
+                        name="insighttype"
+                        value={formData.insighttype}
+                        onChange={handleInputChange}
+                        required
+                    >
+                        <option value="">Select Page Type</option>
+                        <option value="Publication">Publication</option>
+                        <option value="Article">Article</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="isspotlight">Should this be kept in SpotLight?</label>
+                    <select
+                        id="isspotlight"
+                        name="isspotlight"
+                        value={formData.isspotlight}
+                        onChange={handleInputChange}
+                        required
+                    >
+                        <option value="">Select an option</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+
                 <div className="form-group">
                     <label htmlFor="bgimageFile">Upload Blog Banner Image:</label>
                     <input
@@ -283,19 +376,19 @@ const BlogWritePage = () => {
                         required
                     />
                     {isbgimguploading && (
-                            <div>
-                                <p style={{ color: 'red', fontSize: '18px' }}>Image is being uploaded...</p>
-                            </div>
-                        )
+                        <div>
+                            <p style={{ color: 'red', fontSize: '18px' }}>Image is being uploaded...</p>
+                        </div>
+                    )
                     }
-                     <h6 className="imgError"> {bgimgError && "Sorry, only jpg/jpeg/png/jfif images are allowed"} </h6>
+                    <h6 className="imgError"> {bgimgError && "Sorry, only jpg/jpeg/png/jfif images are allowed"} </h6>
                 </div>
                 <button type="submit">Submit</button>
                 {isformsubmitted && (
-                        <div>
-                            <p style={{ color: 'green', fontSize: '18px' }}>The blog is uploaded !!</p>
-                        </div>
-                    )
+                    <div>
+                        <p style={{ color: 'green', fontSize: '18px' }}>The blog is uploaded !!</p>
+                    </div>
+                )
                 }
             </form>
         </div>
