@@ -200,14 +200,15 @@ const EventWritePage = () => {
                         <option value="Animal Feed and Nutrition">Animal Feed and Nutrition</option>
                         <option value="Composites">Composites</option>
                         <option value="Construction">Construction</option>
-                        <option value="Energy And Resources">Energy And Resources</option>
+                        <option value="Clean Energy And Resources">Clean Energy And Resources</option>
                         <option value="Food and Nutrition">Food and Nutrition</option>
                         <option value="Microbials">Microbials</option>
-                        <option value="Oil and Gas">Oil and Gas</option>
-                        <option value="Paints & Coating">Paints & Coating</option>
-                        <option value="Personal Care">Personal Care</option>
+                        <option value="Mobility">Mobility</option>
                         <option value="Petrochemicals & Downstream">Petrochemicals & Downstream</option>
-                        <option value="Polymers">Polymers</option>
+                        <option value="Paints & Coating">Paints & Coating</option>
+                        <option value="Personal Care & Cosmetics">Personal Care & Cosmetics</option>
+                        <option value="Petrochemicals & Downstream">Petrochemicals & Downstream</option>
+                        <option value="Speciality Polymers">Speciality Polymers</option>
                         <option value="Surfactants">Surfactants</option>
                     </select>
                 </div>

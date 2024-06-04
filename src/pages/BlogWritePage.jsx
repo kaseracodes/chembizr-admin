@@ -304,15 +304,20 @@ const BlogWritePage = () => {
                         required
                     >
                         <option value="">Select a category</option>
-                        <option value="Programming">Programming</option>
-                        <option value="Data Science">Data Science</option>
-                        <option value="Technology">Technology</option>
-                        <option value="Self Improvement">Self Improvement</option>
-                        <option value="Writing">Writing</option>
-                        <option value="Relationships">Relationships</option>
-                        <option value="Machine Learning">Machine Learning</option>
-                        <option value="Productivity">Productivity</option>
-                        <option value="Politics">Politics</option>
+                        <option value="Adhesives & Sealants">Adhesives & Sealants</option>
+                        <option value="Animal Feed & Nutrition">Animal Feed & Nutrition</option>
+                        <option value="Composites">Composites</option>
+                        <option value="Construction">Construction</option>
+                        <option value="Clean Energy & Resources">Clean Energy & Resources</option>
+                        <option value="Food, Nutrition & Beverages">Food, Nutrition & Beverages</option>
+                        <option value="Alternative Food">Alternative Food</option>
+                        <option value="Microbials">Microbials</option>
+                        <option value="Mobility">Mobility</option>
+                        <option value="Petrochemicals & Downstream">Petrochemicals & Downstream</option>
+                        <option value="Paints & Coatings">Paints & Coatings</option>
+                        <option value="Personal Care & Cosmetics">Personal Care & Cosmetics</option>
+                        <option value="Specialty Polymers">Specialty Polymers</option>
+                        <option value="Surfactants">Surfactants</option>
                     </select>
                 </div>
 
