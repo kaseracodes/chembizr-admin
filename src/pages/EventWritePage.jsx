@@ -13,20 +13,18 @@ const EventWritePage = () => {
         heading: '',
         description: '',
         category: '',
-        date: ''
+        date: '',
+        images: []
     });
 
     const [imageFile, setImageFile] = useState(null);
     const [imgError, setImgError] = useState(false);
-    const [logoImgError, setLogoImgError] = useState(false);
+    const [imageUrls,setImageUrls] = useState([]);
     const [content, SetContent] = useState('');
     const [firebaseImageUrl, SetFirebaseImageUrl] = useState('');
-    const [logoimageFile, SetLogoImageFile] = useState(null);
     const [isimguploading, SetIsImageUploading] = useState(false);
-    const [isbgimguploading, SetIsBgImageUploading] = useState(false);
     const [isformsubmitted, SetIsFormSubmitted] = useState(false);
     const fileRef = useRef(null);
-    const bgfileRef = useRef(null);
     const editor = useRef(null);
 
 
@@ -58,30 +56,6 @@ const EventWritePage = () => {
                 };
             } else {
                 setImgError(true);
-                return;
-            }
-        }
-    };
-
-    // Function to handle background image file selection
-    const handleLogoImageChange = (e) => {
-        if (e.target.files && e.target.files[0] && e.target.files[0].name) {
-            const fileName = e.target.files[0].name;
-            const fileTypeArray = fileName.split(".");
-            const fileMimeType = fileTypeArray[fileTypeArray.length - 1];
-            if (fileMimeType === "JPG" || fileMimeType === "jpg" || fileMimeType === "PNG" || fileMimeType === "png" || fileMimeType === "jfif" || fileMimeType === "JFIF" || fileMimeType === "JPEG" || fileMimeType === "jpeg") {
-                setLogoImgError(false);
-                const reader = new FileReader();
-                if (e.target.files[0]) {
-                    reader.readAsDataURL(e.target.files[0]);
-                }
-                reader.onload = (readerEvent) => {
-                    const uploadedFile = e.target.files[0];
-                    SetLogoImageFile(uploadedFile);
-                    console.log(uploadedFile); // Log uploadedFile directly
-                };
-            } else {
-                setLogoImgError(true);
                 return;
             }
         }
@@ -120,6 +94,8 @@ const EventWritePage = () => {
                         SetFirebaseImageUrl(downloadUrl);
                         setImgError(false);
                         SetIsImageUploading(false);
+
+                        setImageUrls((prevUrls) => [...prevUrls, downloadUrl]);
                     } catch (error) {
                         console.error("Error getting download URL:", error);
                     }
@@ -136,61 +112,39 @@ const EventWritePage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const filePath = `assets/${logoimageFile.name}`;
-            const folderRef = ref_storage(storage, filePath);
-            const uploadedFile = uploadBytesResumable(folderRef, logoimageFile);
-            uploadedFile.on(
-                "state_changed",
-                (snapshot) => {
-                    // Progress tracking if needed
-                    SetIsBgImageUploading(true);
-                    console.log('snapshot: ', snapshot);
-                },
-                (error) => {
-                    console.log(error);
-                },
-                async () => {
-                    try {
-                        const downloadUrl = await getDownloadURL(uploadedFile.snapshot.ref);
-                        console.log(downloadUrl);
-                        await addDoc(collection(firestore, "events"), {
-                            id: uniqid(),
-                            heading: formData.heading,
-                            description: content,
-                            category: formData.category,
-                            date: formData.date,
-                            logoPath: downloadUrl,
-                            timestamp: serverTimestamp()
-                        });
-                        // Reset form data
-                        setFormData({
-                            heading: '',
-                            author: '',
-                            description: '',
-                            category: '',
-                            date: ''
-                        });
-                        // Reset imageFile and imgError states
-                        setImageFile(null);
-                        SetContent('');
-                        setLogoImgError(false);
-                        fileRef.current.value = '';
-                        bgfileRef.current.value = '';
-                        setImgError(false);
-                        SetIsBgImageUploading(false);
-                        SetIsFormSubmitted(true);
-
-                    }
-                    catch (error) {
-                        console.error("Error getting download URL:", error);
-                    }
-                }
-            );
+            // Create a new document in the "events" collection with the form data
+            await addDoc(collection(firestore, "events"), {
+                id: uniqid(),
+                heading: formData.heading,
+                description: content,
+                category: formData.category,
+                date: formData.date,
+                images: imageUrls,
+                timestamp: serverTimestamp()
+            });
+    
+            // Reset form data
+            setFormData({
+                heading: '',
+                author: '',
+                description: '',
+                category: '',
+                date: '',
+                images: []
+            });
+    
+            // Reset imageFile and imgError states
+            setImageFile(null);
+            SetContent('');
+            fileRef.current.value = '';
+            setImgError(false);
+            setImageUrls([]);
+            SetIsFormSubmitted(true);
+    
+        } catch (error) {
+            console.error("Error adding document to Firestore:", error);
         }
-        catch (error) {
-            console.error("Error uploading image:", error);
-        }
-    }
+    };
 
     return (
         <div className="form-container">
@@ -258,7 +212,7 @@ const EventWritePage = () => {
                     </select>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="imageFile">Upload Image from device to generate URL:</label>
+                    <label htmlFor="imageFile">Upload Image from Device:</label>
                     <input
                         type="file"
                         id="imageFile"
@@ -269,10 +223,9 @@ const EventWritePage = () => {
                         onChange={handleImageChange}
                     />
                     {imageFile && (
-                        <div>
-                            <input type="text" value={firebaseImageUrl} readOnly />
-                            <button onClick={handleURLFetchSubmit} type="button">Fetch URL</button>
-                        </div>
+                        
+                            <button onClick={handleURLFetchSubmit} type="button">Upload</button>
+                        
                     )}
                     {isimguploading && (
                         <div>
@@ -284,26 +237,7 @@ const EventWritePage = () => {
                     <h6 className="imgError"> {imgError && "Sorry, only jpg/jpeg/png/jfif images are allowed"} </h6>
 
                 </div>
-                <div className="form-group">
-                    <label htmlFor="logoimageFile">Upload Logo Image:</label>
-                    <input
-                        type="file"
-                        id="logoimageFile"
-                        name="logoimageFile"
-                        src={logoimageFile}
-                        accept="image/jpeg, image/png"
-                        ref={bgfileRef}
-                        onChange={handleLogoImageChange}
-                        required
-                    />
-                    {isbgimguploading && (
-                        <div>
-                            <p style={{ color: 'red', fontSize: '18px' }}>Image is being uploaded...</p>
-                        </div>
-                    )
-                    }
-                    <h6 className="imgError"> {logoImgError && "Sorry, only jpg/jpeg/png/jfif images are allowed"} </h6>
-                </div>
+            
                 <button type="submit">Submit</button>
                 {isformsubmitted && (
                     <div>
