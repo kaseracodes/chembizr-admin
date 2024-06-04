@@ -90,14 +90,28 @@ const NewsWritePage = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="category">Category:</label>
-                    <input
-                        type="text"
+                    <select
                         id="category"
                         name="category"
                         value={formData.category}
                         onChange={handleInputChange}
                         required
-                    />
+                    >
+                        <option value="">Select Category</option>
+                        <option value="Adhesives and Sealants">Adhesives and Sealants</option>
+                        <option value="Animal Feed and Nutrition">Animal Feed and Nutrition</option>
+                        <option value="Composites">Composites</option>
+                        <option value="Construction">Construction</option>
+                        <option value="Energy And Resources">Energy And Resources</option>
+                        <option value="Food and Nutrition">Food and Nutrition</option>
+                        <option value="Microbials">Microbials</option>
+                        <option value="Oil and Gas">Oil and Gas</option>
+                        <option value="Paints & Coating">Paints & Coating</option>
+                        <option value="Personal Care">Personal Care</option>
+                        <option value="Petrochemicals & Downstream">Petrochemicals & Downstream</option>
+                        <option value="Polymers">Polymers</option>
+                        <option value="Surfactants">Surfactants</option>
+                    </select>
                 </div>
                 <button type="submit">Submit</button>
                 {isformsubmitted && (
