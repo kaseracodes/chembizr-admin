@@ -276,7 +276,7 @@ const EventWritePage = () => {
                         required
                     />
                 </div>
-                <div className="form-group">
+                {/* <div className="form-group">
                     <label htmlFor="imageFile">Upload Image from device to generate URL:</label>
                     <input
                         type="file"
@@ -302,7 +302,7 @@ const EventWritePage = () => {
 
                     <h6 className="imgError"> {imgError && "Sorry, only jpg/jpeg/png/jfif images are allowed"} </h6>
 
-                </div>
+                </div> */}
                 <div className="form-group">
                     <label htmlFor="logoimageFile">Upload Image:</label>
                     <input
