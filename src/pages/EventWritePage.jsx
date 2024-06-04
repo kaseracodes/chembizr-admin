@@ -201,7 +201,7 @@ const EventWritePage = () => {
                         <option value="Composites">Composites</option>
                         <option value="Construction">Construction</option>
                         <option value="Clean Energy And Resources">Clean Energy And Resources</option>
-                        <option value="Food and Nutrition">Food and Nutrition</option>
+                        <option value="Food, Nutrition & Beverages">Food, Nutrition & Beverages</option>
                         <option value="Microbials">Microbials</option>
                         <option value="Mobility">Mobility</option>
                         <option value="Petrochemicals & Downstream">Petrochemicals & Downstream</option>
