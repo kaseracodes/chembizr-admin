@@ -10,6 +10,7 @@ const NewsWritePage = () => {
         heading: '',
         description: '',
         category: '',
+        date: ''
     });
 
     const [isformsubmitted, SetIsFormSubmitted] = useState(false);
@@ -32,14 +33,15 @@ const NewsWritePage = () => {
                 heading: formData.heading,
                 desc: formData.description,
                 category: formData.category,
-                date: new Date(),
+                date: formData.date,
                 timestamp: serverTimestamp(),
             });
             // Reset form data
             setFormData({
                 heading: '',
                 description: '',
-                category: ''
+                category: '',
+                date: ''
             });
             SetIsFormSubmitted(true);
 
@@ -60,6 +62,17 @@ const NewsWritePage = () => {
                         id="heading"
                         name="heading"
                         value={formData.heading}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="date">Date:</label>
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        value={formData.date}
                         onChange={handleInputChange}
                         required
                     />
