@@ -1,6 +1,6 @@
 // Subscribers.jsx
 import React, { useState, useEffect } from 'react';
-import { firestore } from './firebase/firebase.js'; // Ensure firebaseConfig is correctly set up
+import { firestore } from '../firebase/firebase.js'; // Ensure firebaseConfig is correctly set up
 import { collection, getDocs } from 'firebase/firestore';
 import './Subscribers.css';
 
