@@ -12,6 +12,9 @@ import NewsWritePage from "./pages/NewsWritePage.jsx";
 import EventWritePage from "./pages/EventWritePage.jsx";
 import OpeningWritePage from "./pages/OpeningWritePage.jsx";
 import CompendiumWritePage from "./pages/CompendiumWritePage.jsx"
+import Comments from "./pages/Comments.jsx";
+import Queries from "./pages/Queries.jsx";
+import Subscribers from './pages/Subscribers.jsx';
 
 const router = createBrowserRouter([
   {
@@ -47,6 +50,18 @@ const router = createBrowserRouter([
   {
     path: "/writecompendium",
     element: <CompendiumWritePage/>,
+  },
+  {
+    path: "/comments",
+    element: <Comments/>,
+  },
+  {
+    path: "/queries",
+    element: <Queries/>,
+  },
+  {
+    path: "/subscribers",
+    element: <Subscribers/>,
   }
 ]);
 
