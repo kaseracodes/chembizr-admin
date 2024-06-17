@@ -15,6 +15,7 @@ import CompendiumWritePage from "./pages/CompendiumWritePage.jsx"
 import Comments from "./pages/Comments.jsx";
 import Queries from "./pages/Queries.jsx";
 import Subscribers from './pages/Subscribers.jsx';
+import BannerPage from './pages/BannerPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
   {
     path: "/subscribers",
     element: <Subscribers/>,
+  },
+  {
+    path: "/banners",
+    element: <BannerPage/>,
   }
 ]);
 
