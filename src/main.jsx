@@ -16,6 +16,7 @@ import Comments from "./pages/Comments.jsx";
 import Queries from "./pages/Queries.jsx";
 import Subscribers from './pages/Subscribers.jsx';
 import BannerPage from './pages/BannerPage.jsx';
+import MetaTagsPage from './pages/MetaTagsPage';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
   {
     path: "/writenews",
     element: <NewsWritePage/>,
+  },
+  {
+    path: "/metatags",
+    element: <MetaTagsPage/>,
   },
 
   {

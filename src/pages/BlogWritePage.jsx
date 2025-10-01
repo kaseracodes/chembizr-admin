@@ -18,7 +18,15 @@ const BlogWritePage = () => {
         pagetype: '',
         insighttype: '',
         isspotlight: '',
-        date: ''
+        date: '',
+        // Add SEO metadata fields
+        metaTitle: '',
+        metaDescription: '',
+        metaKeywords: '',
+        ogTitle: '',
+        ogDescription: '',
+        twitterTitle: '',
+        twitterDescription: ''
     });
 
     const [imageFile, setImageFile] = useState(null);
@@ -138,74 +146,131 @@ const BlogWritePage = () => {
     }
 
     // Function to handle form submission
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const filePath = `assets/${bgimageFile.name}`;
-            const folderRef = ref_storage(storage, filePath);
-            const uploadedFile = uploadBytesResumable(folderRef, bgimageFile);
-            uploadedFile.on(
-                "state_changed",
-                (snapshot) => {
-                    // Progress tracking if needed
-                    SetIsBgImageUploading(true);
-                    console.log('snapshot: ', snapshot);
-                },
-                (error) => {
-                    console.log(error);
-                },
-                async () => {
-                    try {
-                        const downloadUrl = await getDownloadURL(uploadedFile.snapshot.ref);
-                        console.log(downloadUrl);
-                        await addDoc(collection(firestore, "blogs"), {
-                            id: uniqid(),
-                            heading: formData.heading,
-                            author: formData.author,
-                            description: content,
-                            short: formData.short,
-                            category: formData.category,
-                            pagetype: formData.pagetype,
-                            insighttype: formData.insighttype,
-                            isspotlight: formData.isspotlight,
-                            date: formData.date,
-                            image: downloadUrl,
-                            timestamp: serverTimestamp(),
-                            comments: []
-                        });
-                        // Reset form data
-                        setFormData({
-                            heading: '',
-                            author: '',
-                            description: '',
-                            short: '',
-                            category: '',
-                            pagetype: '',
-                            insighttype: '',
-                            isspotlight: '',
-                            date: ''
-                        });
-                        // Reset imageFile and imgError states
-                        setImageFile(null);
-                        SetContent('');
-                        setBgImgError(false);
-                        fileRef.current.value = '';
-                        bgfileRef.current.value = '';
-                        setImgError(false);
-                        SetIsBgImageUploading(false);
-                        SetIsFormSubmitted(true);
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        const filePath = `assets/${bgimageFile.name}`;
+        const folderRef = ref_storage(storage, filePath);
+        const uploadedFile = uploadBytesResumable(folderRef, bgimageFile);
+        
+        uploadedFile.on(
+            "state_changed",
+            (snapshot) => {
+                SetIsBgImageUploading(true);
+                console.log('snapshot: ', snapshot);
+            },
+            (error) => {
+                console.log(error);
+            },
+            async () => {
+                try {
+                    const downloadUrl = await getDownloadURL(uploadedFile.snapshot.ref);
+                    const blogId = uniqid();
+                    const blogRoute = `/blog/${blogId}`;
 
-                    }
-                    catch (error) {
-                        console.error("Error getting download URL:", error);
-                    }
+                    // Save blog data (existing logic)
+                    await addDoc(collection(firestore, "blogs"), {
+                        id: blogId,
+                        heading: formData.heading,
+                        author: formData.author,
+                        description: content,
+                        short: formData.short,
+                        category: formData.category,
+                        pagetype: formData.pagetype,
+                        insighttype: formData.insighttype,
+                        isspotlight: formData.isspotlight,
+                        date: formData.date,
+                        image: downloadUrl,
+                        timestamp: serverTimestamp(),
+                        comments: []
+                    });
+
+                    // NEW: Save metadata in separate collection
+                    await addDoc(collection(firestore, "metadata"), {
+                        route: blogRoute,
+                        blogId: blogId,
+                        metaTitle: formData.metaTitle || formData.heading,
+                        metaDescription: formData.metaDescription || formData.short,
+                        metaKeywords: formData.metaKeywords,
+                        ogTitle: formData.ogTitle || formData.heading,
+                        ogDescription: formData.ogDescription || formData.short,
+                        ogImage: downloadUrl,
+                        ogUrl: `${window.location.origin}${blogRoute}`,
+                        twitterTitle: formData.twitterTitle || formData.heading,
+                        twitterDescription: formData.twitterDescription || formData.short,
+                        twitterImage: downloadUrl,
+                        twitterCard: "summary_large_image",
+                        author: formData.author,
+                        publishedDate: formData.date,
+                        createdAt: serverTimestamp()
+                    });
+
+                    // Reset form data (update to include new fields)
+                    setFormData({
+                        heading: '',
+                        author: '',
+                        description: '',
+                        short: '',
+                        category: '',
+                        pagetype: '',
+                        insighttype: '',
+                        isspotlight: '',
+                        date: '',
+                        metaTitle: '',
+                        metaDescription: '',
+                        metaKeywords: '',
+                        ogTitle: '',
+                        ogDescription: '',
+                        twitterTitle: '',
+                        twitterDescription: ''
+                    });
+                    
+                    // Reset other states (existing logic)
+                    setImageFile(null);
+                    SetContent('');
+                    setBgImgError(false);
+                    fileRef.current.value = '';
+                    bgfileRef.current.value = '';
+                    setImgError(false);
+                    SetIsBgImageUploading(false);
+                    SetIsFormSubmitted(true);
+
+                } catch (error) {
+                    console.error("Error saving blog and metadata:", error);
                 }
-            );
-        }
-        catch (error) {
-            console.error("Error uploading image:", error);
-        }
+            }
+        );
+    } catch (error) {
+        console.error("Error uploading image:", error);
     }
+};
+
+// Add this function before your return statement
+const generateSEOPreview = () => {
+    const title = formData.metaTitle || formData.heading || 'Blog Title';
+    const description = formData.metaDescription || formData.short || 'Blog description';
+    
+    return (
+        <div style={{
+            marginTop: '15px', 
+            padding: '15px', 
+            border: '1px solid #e1e5e9', 
+            borderRadius: '8px',
+            backgroundColor: '#f8f9fa'
+        }}>
+            <h4 style={{color: '#1a0dab', fontSize: '18px', margin: '0 0 5px 0'}}>
+                {title}
+            </h4>
+            <p style={{color: '#006621', fontSize: '14px', margin: '0 0 5px 0'}}>
+                {window.location.origin}/blog/your-blog-id
+            </p>
+            <p style={{color: '#545454', fontSize: '13px', margin: '0'}}>
+                {description.length > 160 ? description.substring(0, 160) + '...' : description}
+            </p>
+        </div>
+    );
+};
+
 
     return (
         <div className="form-container">
@@ -388,6 +453,112 @@ const BlogWritePage = () => {
                     }
                     <h6 className="imgError"> {bgimgError && "Sorry, only jpg/jpeg/png/jfif images are allowed"} </h6>
                 </div>
+                {/* Add this section before the submit button */}
+<fieldset style={{marginTop: '30px', padding: '20px', border: '1px solid #ddd', borderRadius: '8px'}}>
+    <legend style={{fontWeight: 'bold', fontSize: '18px'}}>SEO Meta Tags (Optional)</legend>
+    
+    <div className="form-group">
+        <label htmlFor="metaTitle">Meta Title:</label>
+        <input
+            type="text"
+            id="metaTitle"
+            name="metaTitle"
+            value={formData.metaTitle}
+            onChange={handleInputChange}
+            placeholder="Leave empty to use blog heading"
+            maxLength="60"
+        />
+        <small style={{color: '#666', fontSize: '12px'}}>
+            Recommended: 50-60 characters. Current: {formData.metaTitle.length}/60
+        </small>
+    </div>
+
+    <div className="form-group">
+        <label htmlFor="metaDescription">Meta Description:</label>
+        <textarea
+            id="metaDescription"
+            name="metaDescription"
+            value={formData.metaDescription}
+            onChange={handleInputChange}
+            placeholder="Leave empty to use short description"
+            maxLength="160"
+            rows="3"
+        />
+        <small style={{color: '#666', fontSize: '12px'}}>
+            Recommended: 150-160 characters. Current: {formData.metaDescription.length}/160
+        </small>
+    </div>
+
+    <div className="form-group">
+        <label htmlFor="metaKeywords">Meta Keywords:</label>
+        <input
+            type="text"
+            id="metaKeywords"
+            name="metaKeywords"
+            value={formData.metaKeywords}
+            onChange={handleInputChange}
+            placeholder="keyword1, keyword2, keyword3"
+        />
+        <small style={{color: '#666', fontSize: '12px'}}>
+            Comma-separated list of relevant keywords
+        </small>
+    </div>
+</fieldset>
+
+<fieldset style={{marginTop: '20px', padding: '20px', border: '1px solid #ddd', borderRadius: '8px'}}>
+    <legend style={{fontWeight: 'bold', fontSize: '18px'}}>Social Media Sharing (Optional)</legend>
+    
+    <h4 style={{marginBottom: '15px', color: '#4267B2'}}>Facebook / Open Graph</h4>
+    <div className="form-group">
+        <label htmlFor="ogTitle">Open Graph Title:</label>
+        <input
+            type="text"
+            id="ogTitle"
+            name="ogTitle"
+            value={formData.ogTitle}
+            onChange={handleInputChange}
+            placeholder="Leave empty to use blog heading"
+        />
+    </div>
+
+    <div className="form-group">
+        <label htmlFor="ogDescription">Open Graph Description:</label>
+        <textarea
+            id="ogDescription"
+            name="ogDescription"
+            value={formData.ogDescription}
+            onChange={handleInputChange}
+            placeholder="Leave empty to use short description"
+            rows="3"
+        />
+    </div>
+
+    <h4 style={{marginBottom: '15px', marginTop: '20px', color: '#1DA1F2'}}>Twitter Cards</h4>
+    <div className="form-group">
+        <label htmlFor="twitterTitle">Twitter Title:</label>
+        <input
+            type="text"
+            id="twitterTitle"
+            name="twitterTitle"
+            value={formData.twitterTitle}
+            onChange={handleInputChange}
+            placeholder="Leave empty to use blog heading"
+        />
+    </div>
+
+    <div className="form-group">
+        <label htmlFor="twitterDescription">Twitter Description:</label>
+        <textarea
+            id="twitterDescription"
+            name="twitterDescription"
+            value={formData.twitterDescription}
+            onChange={handleInputChange}
+            placeholder="Leave empty to use short description"
+            rows="3"
+        />
+    </div>
+</fieldset>
+
                 <button type="submit">Submit</button>
                 {isformsubmitted && (
                     <div>
@@ -395,7 +566,19 @@ const BlogWritePage = () => {
                     </div>
                 )
                 }
+                
             </form>
+            {/* Add this after the SEO fieldset */}
+{(formData.heading || formData.metaTitle) && (
+    <div style={{marginTop: '20px'}}>
+        <h3>SEO Preview:</h3>
+        <p style={{fontSize: '14px', color: '#666', marginBottom: '10px'}}>
+            This is how your blog will appear in Google search results:
+        </p>
+        {generateSEOPreview()}
+    </div>
+)}
+
         </div>
     );
 };
