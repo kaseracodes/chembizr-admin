@@ -62,16 +62,16 @@ const HomePage = () => {
                     <div className="tab"><Link to="/writenews">Add News</Link></div>
                     <div className="tab"><Link to="/writeopening">Add Job Openings</Link></div>
                     <div className="tab"><Link to="/writecompendium">Add Compendiums</Link></div>
-                    
+
                     {/* Analytics & Management Tabs */}
                     <div className="tab"><Link to="/comments">View Comments on Events</Link></div>
                     <div className="tab"><Link to="/queries">View Queries</Link></div>
                     <div className="tab"><Link to="/subscribers">View Subscribers</Link></div>
-                    
+
                     {/* Design & SEO Management */}
                     <div className="tab"><Link to="/banners">Change Banners</Link></div>
                     <div className="tab meta-tags-tab"><Link to="/metatags">Manage Meta Tags</Link></div>
-                    
+
                     {userLoggedIn && (
                         <button onClick={handleLogoutClick}>Logout</button>
                     )}
