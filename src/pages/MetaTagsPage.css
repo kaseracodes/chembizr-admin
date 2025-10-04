@@ -1,0 +1,253 @@
+/* src/pages/MetaTagsPage.css */
+
+/* Form container - same as BlogWritePage */
+.form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  /* Form heading */
+  .form-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Form group */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  /* Label */
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Text input */
+  input[type='text'],
+  input[type='url'],
+  textarea,
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  
+  /* Textarea */
+  textarea {
+    resize: vertical;
+  }
+  
+  /* Select styling */
+  select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  /* SEO Fieldset styling */
+  .seo-fieldset {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fafafa;
+  }
+  
+  .seo-fieldset legend {
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+    padding: 0 10px;
+  }
+  
+  /* Small helper text */
+  .form-group small {
+    display: block;
+    color: #666;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
+  /* Form actions */
+  .form-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  /* Submit button */
+  button[type='submit'] {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button[type='submit']:hover:not(:disabled) {
+    background-color: #0056b3;
+  }
+  
+  button[type='submit']:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Cancel button */
+  .cancel-btn {
+    padding: 12px 20px;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #545b62;
+  }
+  
+  /* SEO Preview styling */
+  .seo-preview {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+  }
+  
+  .seo-preview h4 {
+    color: #1a0dab;
+    font-size: 18px;
+    margin: 0 0 5px 0;
+  }
+  
+  .seo-preview .url {
+    color: #006621;
+    font-size: 14px;
+    margin: 0 0 5px 0;
+  }
+  
+  .seo-preview .description {
+    color: #545454;
+    font-size: 13px;
+    margin: 0;
+  }
+  
+  /* Existing tags section */
+  .existing-tags {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px solid #ddd;
+  }
+  
+  .existing-tags h3 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .tags-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .tag-item {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .tag-info h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+  }
+  
+  .tag-path {
+    font-family: monospace;
+    color: #666;
+    font-size: 14px;
+    margin: 0 0 10px 0;
+  }
+  
+  .tag-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .tag-buttons {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  
+  .edit-btn {
+    padding: 8px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  
+  .edit-btn:hover {
+    background-color: #218838;
+  }
+  
+  .delete-btn {
+    padding: 8px 15px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  
+  .delete-btn:hover {
+    background-color: #c82333;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 600px) {
+    .tag-item {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .tag-buttons {
+      align-self: stretch;
+    }
+    
+    .edit-btn,
+    .delete-btn {
+      flex: 1;
+    }
+  }
+  
