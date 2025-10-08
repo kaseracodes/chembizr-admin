@@ -58,6 +58,7 @@ const HomePage = () => {
                 <div className="tabs-container">
                     {/* Content Management Tabs */}
                     <div className="tab"><Link to="/writeblog">Add Blogs</Link></div>
+                    <div className="tab"><Link to="/editblog">Edit Blogs</Link></div>
                     <div className="tab"><Link to="/writeevent">Add Events</Link></div>
                     <div className="tab"><Link to="/writenews">Add News</Link></div>
                     <div className="tab"><Link to="/writeopening">Add Job Openings</Link></div>
