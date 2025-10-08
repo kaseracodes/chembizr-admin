@@ -17,6 +17,7 @@ import Queries from "./pages/Queries.jsx";
 import Subscribers from './pages/Subscribers.jsx';
 import BannerPage from './pages/BannerPage.jsx';
 import MetaTagsPage from './pages/MetaTagsPage';
+import BlogEditPage from './pages/BlogEditPage';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "/writeblog",
     element: <BlogWritePage/>,
+  },
+  {
+    path: "/editblog",
+    element: <BlogEditPage/>,
   },
 
   {
